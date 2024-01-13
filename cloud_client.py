@@ -9,7 +9,7 @@ def send_file(sock, filename):
 
 def cloud_client():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect(("192.168.3.10", 8000))
+    sock.connect(("192.168.3.6", 8000))
 
     # Envia el nombre del archivo
     filename = input("Ingrese el nombre del archivo: ")
