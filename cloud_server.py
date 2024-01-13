@@ -30,6 +30,9 @@ def cloud_server():
         receive_file(connection, filename)
         print(f"Archivo {filename} recibido correctamente")
 
+        # Envia un mensaje de confirmación
+        connection.sendall("Archivo recibido exitosamente en la nube".encode())
+
         # Cierra la conexión
         connection.close()
 
