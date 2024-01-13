@@ -2,6 +2,7 @@
 
 import socket
 import os
+import threading
 
 def receive_file(connection, filename):
     with open(filename, 'wb') as file:
@@ -10,6 +11,20 @@ def receive_file(connection, filename):
             if not data:
                 break
             file.write(data)
+
+def handle_client(connection, address):
+    print(f"Conexión establecida desde {address}")
+
+    # Recibe el nombre del archivo
+    filename = connection.recv(1024).decode()
+    print(f"Recibiendo archivo: {filename}")
+
+    # Recibe el archivo
+    receive_file(connection, filename)
+    print(f"Archivo {filename} recibido correctamente")
+
+    # Cierra la conexión
+    connection.close()
 
 def cloud_server():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -22,16 +37,20 @@ def cloud_server():
         connection, address = sock.accept()
         print(f"Conexión establecida desde {address}")
 
-        # Recibe el nombre del archivo
-        filename = connection.recv(1024).decode()
-        print(f"Recibiendo archivo: {filename}")
+        # Incia un thread para manejar la conexión con multiples clientes
+        client_thread = threading.Thread(target=handle_client, args=(connection, address))
+        client_thread.start()
 
-        # Recibe el archivo
-        receive_file(connection, filename)
-        print(f"Archivo {filename} recibido correctamente")
+        # # Recibe el nombre del archivo
+        # filename = connection.recv(1024).decode()
+        # print(f"Recibiendo archivo: {filename}")
 
-        # Cierra la conexión
-        connection.close()
+        # # Recibe el archivo
+        # receive_file(connection, filename)
+        # print(f"Archivo {filename} recibido correctamente")
+
+        # # Cierra la conexión
+        # connection.close()
 
 cloud_server()
 
