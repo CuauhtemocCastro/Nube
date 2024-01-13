@@ -1,34 +1,23 @@
-import threading
-import zmq
+import socket
 
-def cloud_server(node_id, host, port):
-    """
-    Función para manejar el servidor de la nube.
+def cloud_server():
+    # Crear un socket TCP/IP
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    Args:
-        node_id (int): Identificador del nodo.
-        host (str): Dirección IP del host.
-        port (int): Puerto de comunicación.
+    # Asigna el socket al puerto 8000
+    sock.bind(("192.168.3.6", 8000))
 
-    """
-    # Inicializar el contexto y el socket REP (Reply) de ZeroMQ
-    context = zmq.Context()
-    socket = context.socket(zmq.REP)
-    socket.bind(f"tcp://{host}:{port}")
+    # Escucha conexiones entrantes
+    sock.listen(1)
 
-    # Bucle principal del servidor
     while True:
-        # Recibir mensaje del cliente
-        message = socket.recv_string()
-        print(f"Nodo {node_id} recibido: {message}")
+         # Acepta una conexión
+        connection, address = sock.accept()
 
-        # Enviar respuesta al cliente
-        response = f"Respuesta del nodo {node_id}"
-        socket.send_string(response)
+        #Lee los datos del cliente
+        data = connection.recv(1024)
 
-# Iniciar hilo del servidor
-node_thread = threading.Thread(target=cloud_server, args=(1, "192.168.3.6", 5555))
-node_thread.start()
+        # Imprime los datos recibidos
+        print(data)
 
-# Esperar a que el hilo del servidor termine (en este caso, nunca sucede debido al bucle infinito)
-node_thread.join()
+cloud_server()
