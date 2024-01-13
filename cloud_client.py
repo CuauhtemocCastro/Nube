@@ -1,38 +1,18 @@
-import zmq
+import socket
 
-def cloud_client(message, host, port):
-    """
-    Función que representa un cliente en la nube local.
+def cloud_client():
+    # Crea un socket TCP/IP
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    Parameters:
-    - message (str): El mensaje que se enviará al servidor.
-    - host (str): La dirección IP o nombre de host del servidor.
-    - port (int): El puerto al que el cliente se conectará.
+    # Conecta el socket en el puerto cuando el servidor esté escuchando (8000)
+    sock.connect(("192.168.3.6", 8000))
 
-    Returns:
-    None
-    """
-    # Crear un contexto de ZeroMQ
-    context = zmq.Context()
+    message = input("Mensaje a enviar: ")
 
-    # Crear un socket de tipo REQ (requisición)
-    socket = context.socket(zmq.REQ)
+    # Escribe los datos al servidor
+    sock.sendall(message.encode())
 
-    # Conectar el socket al servidor
-    socket.connect(f"tcp://{host}:{port}")
+    # Cierra la conexión
+    sock.close()
 
-    # Enviar el mensaje al servidor
-    socket.send_string(message)
-
-    # Recibir la respuesta del servidor
-    response = socket.recv_string()
-
-    # Imprimir la respuesta recibida del servidor
-    print(f"Respuesta recibida del servidor: {response}")
-
-    # Cerrar el socket y el contexto
-    socket.close()
-    context.term()
-
-# Ejemplo de uso del cliente
-cloud_client("Hola desde el cliente", "192.168.3.10", 5555)
+cloud_client()
