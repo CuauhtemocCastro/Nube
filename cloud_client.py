@@ -19,7 +19,7 @@ def download_file(sock, filename):
 
 def cloud_client():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect(("192.168.1.69", 8000))
+    sock.connect(("192.168.1.6", 8000))
 
     # Solicita al usuario la acción (upload o download)
     action = input("Ingrese 'upload' para subir un archivo o 'download' para descargar: ")
