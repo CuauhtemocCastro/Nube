@@ -8,7 +8,7 @@ def send_file(sock, filename):
             print(f"Enviados {len(data)} bytes")
 
 def download_file(sock, filename):
-    destination_path = r'C:\Users\jorge\OneDrive\Documents\Redes\\' + filename
+    destination_path = r'/home/balderik/Documentos/Redes//' + filename
     with open(destination_path, 'wb') as file:
         while True:
             data = sock.recv(1024)
