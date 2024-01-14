@@ -5,7 +5,7 @@ import os
 import threading
 
 # Establece la ruta de destino para los archivos descargados
-DOWNLOAD_PATH = r'"C:\Users\jorge\OneDrive\Documents\Redes"'
+DOWNLOAD_PATH = r"C:\Users\jorge\OneDrive\Documents\Redes\\"
 
 def receive_file(connection, filename):
     destination_path = os.path.join(DOWNLOAD_PATH, filename)
