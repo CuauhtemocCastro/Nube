@@ -47,7 +47,7 @@ def handle_client(connection, address):
 
 def cloud_server():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.bind(("192.168.1.69", 8000))
+    sock.bind(("192.168.1.6", 8000))
     sock.listen(5)
 
     print("Servidor escuchando en 192.168.1.69:8000")
